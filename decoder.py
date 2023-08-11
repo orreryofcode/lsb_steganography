@@ -28,7 +28,7 @@ def get_lsb():
         completed_chunk = chunk_a[len(chunk_a) - 3:] + chunk_b[len(chunk_b) - 3:] + chunk_c[len(chunk_c) - 2:]
         decoded_bins.append(completed_chunk)
 
-        count = count + 3
+        count += 3
 
 
 def rgb_to_bin(rgb_value):
@@ -57,9 +57,9 @@ def get_rgb_value_of_img(img_path):
             rgb_val = img.getpixel((row, col))
 
             rgb_to_bin(rgb_val)
-            col = col + 1
+            col += 1
 
-        row = row + 1
+        row += 1
 
 
 get_rgb_value_of_img("modified.png")

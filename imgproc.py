@@ -25,7 +25,7 @@ def pixel_replacer(img_path):
 
             rgb.append((chunk_a, chunk_b, chunk_c))
 
-        i = i + 3
+        i += 3
 
     count = 0
     for j in range(img_w):
@@ -33,7 +33,7 @@ def pixel_replacer(img_path):
             if count < len(rgb):
                 pixelMap[k, j] = rgb[count]
 
-                count = count + 1
+                count += 1
             else:
                 break
 
@@ -59,7 +59,7 @@ def lsb_replacer():
         new_rgb = new_rgb + value
 
         new_bin_values.append(new_rgb)
-        start = start + 1
+        start += 1
 
 
 def chunkify():
@@ -108,9 +108,9 @@ def get_rgb_value_of_img(img_path):
         while col < img_h:
             rgb_val = img.getpixel((row, col))
             rgb_to_bin(rgb_val)
-            col = col + 1
+            col += 1
 
-        row = row + 1
+        row += 1
 
     img.close()
 
