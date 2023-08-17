@@ -1,4 +1,4 @@
-from PIL import Image
+from PIL import Image, UnidentifiedImageError
 
 original_img_bins = []
 message_ascii_vals = []
@@ -10,7 +10,7 @@ new_rgb_values = []
 
 def pixel_replacer(img_path):
     img = Image.open(img_path)  # open image
-    pixelMap = img.load()  # load pixel map
+    pixelmap = img.load()  # load pixel map
     img_w = img.width
     img_h = img.height
     rgb = []
@@ -31,7 +31,7 @@ def pixel_replacer(img_path):
     for j in range(img_w):
         for k in range(img_h):
             if count < len(rgb):
-                pixelMap[k, j] = rgb[count]
+                pixelmap[k, j] = rgb[count]
 
                 count += 1
             else:
@@ -39,6 +39,7 @@ def pixel_replacer(img_path):
 
     img.save("modified.png")
     print("Modified image was saved.")
+    return 1
 
 
 def new_colors():
@@ -77,9 +78,20 @@ def text_ascii_to_bin():
     chunkify()
 
 
-def text_to_ascii(text):
-    for c in text:
-        message_ascii_vals.append(ord(c))
+def text_to_ascii(text=None):
+
+    try:
+        if text is None or len(text) < 1:
+            return "Please include a message."
+
+        for c in text:
+            character = ord(c)
+            if character <= 127:
+                message_ascii_vals.append(character)
+            else:
+                return "Text ASCII value must be less than or equal to 127"
+    except TypeError:
+        return "TypeError: Message must be of type string."
 
 
 def rgb_to_bin(rgb_value):
@@ -94,35 +106,58 @@ def rgb_to_bin(rgb_value):
         original_img_bins.append(binary_value)
 
 
-def get_rgb_value_of_img(img_path):
-    img = Image.open(img_path)
+def get_rgb_value_of_img(img_path=None):
+    if img_path is None or len(img_path) == 0:
+        return "Please provide a JPEG image."
 
-    img_w = img.width
-    img_h = img.height
+    try:
+        img = Image.open(img_path)
 
-    row = 0  # Top left Corner of Image;
+        if img.format != "JPEG":
+            img.close()
+            return "Please provide a JPEG image."
 
-    while row < img_w:
-        col = 0
+        else:
+            img_w = img.width
+            img_h = img.height
 
-        while col < img_h:
-            rgb_val = img.getpixel((row, col))
-            rgb_to_bin(rgb_val)
-            col += 1
+            row = 0  # Top left Corner of Image;
 
-        row += 1
+            while row < img_w:
+                col = 0
 
-    img.close()
+                while col < img_h:
+                    rgb_val = img.getpixel((row, col))
+                    rgb_to_bin(rgb_val)
+                    col += 1
 
+                row += 1
 
-def init(original_file, message):
-    get_rgb_value_of_img(original_file)
-    test_string = message + "~"
-    text_to_ascii(test_string)
-    text_ascii_to_bin()
-    lsb_replacer()
-    new_colors()
-    pixel_replacer(original_file)
+            img.close()
+
+    except UnidentifiedImageError:
+        return "File is not an image. Please use a JPEG image."
 
 
-init("gato.jpg", "Secret Message... Shhhh")
+def lsb_encode(original_img=None, message=None):
+    if original_img is None:
+        original_img = input("Please enter the complete file path of the JPEG image you would like to encode: ")
+
+    if message is None:
+        message = input("Please type a message: ")
+
+    if len(original_img) > 0:
+        try:
+            get_rgb_value_of_img(original_img)
+            message += "~"
+            text_to_ascii(message)
+            text_ascii_to_bin()
+            lsb_replacer()
+            new_colors()
+            pixel_replacer(original_img)
+        except FileNotFoundError:
+            print("File not found")
+            return "File not found"
+    else:
+        print("No image provided")
+        return "No image provided"
