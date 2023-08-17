@@ -1,5 +1,12 @@
 # LSB Steganography Tool
-This is a tool that uses LSB insertion in order to hide messages in an image. Built using Python and Pillow. This project was inspired by my learning about cybersecurity while studying for the CompTIA Security+ exam. It was built over the span of about 8 hours across 2 days. Much of this time was spent researching tools and methods in Python and Pillow. It is not intended by any means to be used seriously and I don't know how much more work I'll be doing on this. 
+This is a tool that uses LSB insertion in order to hide messages in an image. Built using Python and Pillow. This project was inspired by my learning about cybersecurity while studying for the CompTIA Security+ exam. It was built over the span of about 8 hours across 2 days. Much of this time was spent researching tools and methods in Python and Pillow. 
+
+## Dependencies
+* Pillow [[documentation]](https://pillow.readthedocs.io/en/stable/installation.html)
+    * Run the following to install:
+      * <code>python3 -m pip install --upgrade pip </code>
+      * <code>python3 -m pip install --upgrade Pillow</code>
+
 
 ## What does it do?
 It takes a 24 bit image and encodes a message using LSB insertion. Instead of only replacing the last bit:
