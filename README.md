@@ -50,5 +50,8 @@ This file contains the following functions:
 
 
 ## TODO
-* A whole lot of code reorganization
-* There is a cutoff for how long of a message you can embed but I haven't spent any time thinking about what that cutoff is or how to account for it. I imagine that you could just as easily replace the 3 LSBs of all bytes to increase storage size even more, though that would require more work since we would have to account for all final values that are not a multiple of 8.
+* Write tests for imgproc.py ✔️
+* Write tests for decoder.py ❌
+* File reorganization ❌
+* Write script to run tool via terminal (maybe) ❌
+* Create GUI using tkinter (maybe) ❌
